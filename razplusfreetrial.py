@@ -18,11 +18,15 @@ fname = ''.join(random.sample(string.ascii_letters, 4))
 lname = ''.join(random.sample(string.ascii_letters, 4))
 print(fname, lname)
 
-headers = {"Referer": "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"}
+headers = {"Content-Type": "application/x-www-form-urlencoded", "Connection": "keep-alive", \
+           "Upgrade-Insecure-Requests": "1", "Host": "accounts.learninga-z.com", \
+           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", \
+           "Origin": "https://accounts.learninga-z.com", \
+           "Referer": "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"}
 payload = {"mdrQuery.stateId": 0, "mdrQuery.mdrType": "public", "international": "true", \
            "mdrQuery.useMdr": "false", "campaignName": "trialbtnnxtologoRP", "org": "HHJJKK", \
            "customerType": "new", "usageType": "classroom", "firstName": fname, \
            "lastName": lname, "zip": 99999, "countryId": 98, "email": mail_address, \
            "mdrQuery.freeFormOrgName": "HHJJKK", "newUserUsername": username}
 r_razplus = requests.post("https://accounts.learninga-z.com/accountsweb/marketing/trial.do", data=payload, headers=headers)
-print(r_razplus.text)
+print(r_razplus.status_code)
