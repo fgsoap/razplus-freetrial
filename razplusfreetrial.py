@@ -25,13 +25,20 @@ RS_RAZPLUS.get(
     "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
 )
 HEADERS = {
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Connection": "keep-alive",
-    "Upgrade-Insecure-Requests": "1",
-    "Host": "accounts.learninga-z.com",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-    "Origin": "https://accounts.learninga-z.com",
-    "Referer": "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
+    "Content-Type":
+    "application/x-www-form-urlencoded",
+    "Connection":
+    "keep-alive",
+    "Upgrade-Insecure-Requests":
+    "1",
+    "Host":
+    "accounts.learninga-z.com",
+    "Accept":
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+    "Origin":
+    "https://accounts.learninga-z.com",
+    "Referer":
+    "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
 }
 PAYLOAD = {
     "mdrQuery.stateId": 0,
@@ -48,7 +55,6 @@ PAYLOAD = {
     "countryId": 98,
     "email": MAIL_ADDRESS,
     "occupation": 39,
-
     "mdrQuery.freeFormOrgName": "HHJJKK",
     "newUserUsername": USERNAME
 }
