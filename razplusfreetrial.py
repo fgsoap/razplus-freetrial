@@ -9,27 +9,26 @@ from threading import Thread
 import pyquery
 import requests
 
+rs = requests.Session()
 
 def get_email(q):
     # Get Email address
     print("in get_email ...")
     mail_url = "https://10minutemail.com/10MinuteMail/index.html"
-    rs_tmpmail = requests.Session()
-    mail_final_url = rs_tmpmail.get(mail_url).url
-    r_mail = rs_tmpmail.get(mail_final_url).text
+    mail_final_url = rs.get(mail_url).url
+    r_mail = rs.get(mail_final_url).text
     pq = pyquery.PyQuery(r_mail)
     mail_address = pq('#mailAddress').attr("value")
-    q.put((mail_address, rs_tmpmail))
+    q.put(mail_address)
 
 
 def check_email(q):
     # Check Email
     print("in check_email ...")
-    rs_tmpmail = q.get()
     start_time = time.time()
     while True:
-        mail_final_url = rs_tmpmail.get("https://10minutemail.com/10MinuteMail/index.html").url
-        r_mail = rs_tmpmail.get(mail_final_url).text
+        mail_final_url = rs.get("https://10minutemail.com/10MinuteMail/index.html").url
+        r_mail = rs.get(mail_final_url).text
         pq = pyquery.PyQuery(r_mail)
         mail = pq('#mail-clock-wrapper > div.mail-notification.unread')
         print(mail)
@@ -42,7 +41,7 @@ def check_email(q):
 def register_razplus(q):
     # Register in raz-plus
     print("in register_razplus ...")
-    mail_address, rs_tmpmail = q.get()
+    mail_address = q.get()
     username = mail_address.split("@")[0]
     f_name = ''.join(random.sample(string.ascii_letters, 4))
     l_name = ''.join(random.sample(string.ascii_letters, 4))
@@ -90,7 +89,6 @@ def register_razplus(q):
         headers=headers)
     if "An email has been sent" in response.text and mail_address in response.text:
         print("Registed in RAZPLUS Successfully!")
-        q.put(rs_tmpmail)
     else:
         print("Registed in RAZPLUS failed!")
         sys.exit()
