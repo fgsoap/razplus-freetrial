@@ -98,7 +98,7 @@ def check_email():
         if mail is not None:
             msg = rs.get("https://tempail.com/en/" + mail).text
             pq = pyquery.PyQuery(msg)
-            razplus_msg = pq('.gmail_default')
+            razplus_msg = pq('#iframe').attr('src')
             print(razplus_msg)
             break
         time.sleep(1)
