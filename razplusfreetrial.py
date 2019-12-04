@@ -26,6 +26,7 @@ def get_email(q):
     r_mail = rs.get("https://tempail.com/en/", headers=headers).text
     pq = pyquery.PyQuery(r_mail)
     mail_address = pq('#eposta_adres').attr('value')
+    print(mail_address)
     q.put(mail_address)
 
 
@@ -94,7 +95,7 @@ def check_email():
         pq = pyquery.PyQuery(r_mail)
         mail = pq('.mail ').attr('id')
         if mail is not None:
-            msg = rs.get("https://tempail.com/en/" + mail)
+            msg = rs.get("https://tempail.com/en/" + mail).text
             pq = pyquery.PyQuery(msg)
             razplus_msg = pq('.gmail_default')
             print(razplus_msg)
