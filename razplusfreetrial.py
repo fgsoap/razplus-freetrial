@@ -11,31 +11,16 @@ import requests
 
 rs = requests.Session()
 
+
 def get_email(q):
     # Get Email address
     print("in get_email ...")
-    mail_url = "https://10minutemail.com/10MinuteMail/index.html"
+    mail_url = "https://tempail.com/en/"
     mail_final_url = rs.get(mail_url).url
     r_mail = rs.get(mail_final_url).text
     pq = pyquery.PyQuery(r_mail)
-    mail_address = pq('#mailAddress').attr("value")
+    mail_address = pq('#eposta_adres').attr("value")
     q.put(mail_address)
-
-
-def check_email(q):
-    # Check Email
-    print("in check_email ...")
-    start_time = time.time()
-    while True:
-        mail_final_url = rs.get("https://10minutemail.com/10MinuteMail/index.html").url
-        r_mail = rs.get(mail_final_url).text
-        pq = pyquery.PyQuery(r_mail)
-        mail = pq('#mail-clock-wrapper > div.mail-notification.unread')
-        print(mail)
-        time.sleep(1)
-        stop_time = time.time()
-        if (stop_time - start_time) > 120:
-            break
 
 
 def register_razplus(q):
@@ -92,6 +77,24 @@ def register_razplus(q):
     else:
         print("Registed in RAZPLUS failed!")
         sys.exit()
+
+
+def check_email(q):
+    # Check Email
+    print("in check_email ...")
+    start_time = time.time()
+    while True:
+        r_mail = rs.get("https://tempail.com/en/").text
+        pq = pyquery.PyQuery(r_mail)
+        mail = pq('.mail ').attr('id')
+        print(mail)
+        if mail is not None:
+            q.put(mail)
+            break
+        time.sleep(1)
+        stop_time = time.time()
+        if (stop_time - start_time) > 120:
+            break
 
 
 if __name__ == "__main__":
