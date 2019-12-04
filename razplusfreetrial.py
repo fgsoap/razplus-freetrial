@@ -14,12 +14,18 @@ rs = requests.Session()
 
 def get_email(q):
     # Get Email address
+    headers = {
+        "authority":
+            "tempail.com",
+        "user-agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+        "sec-fetch-mode":
+            "navigate"
+    }
     print("in get_email ...")
-    mail_url = "https://tempail.com/en/"
-    mail_final_url = rs.get(mail_url).url
-    r_mail = rs.get(mail_final_url).text
+    r_mail = rs.get("https://tempail.com/en/", headers=headers).text
     pq = pyquery.PyQuery(r_mail)
-    mail_address = pq('#eposta_adres').attr("value")
+    mail_address = pq('#eposta_adres').attr('value')
     q.put(mail_address)
 
 
@@ -79,7 +85,7 @@ def register_razplus(q):
         sys.exit()
 
 
-def check_email(q):
+def check_email():
     # Check Email
     print("in check_email ...")
     start_time = time.time()
@@ -87,9 +93,11 @@ def check_email(q):
         r_mail = rs.get("https://tempail.com/en/").text
         pq = pyquery.PyQuery(r_mail)
         mail = pq('.mail ').attr('id')
-        print(mail)
         if mail is not None:
-            q.put(mail)
+            msg = rs.get("https://tempail.com/en/" + mail)
+            pq = pyquery.PyQuery(msg)
+            razplus_msg = pq('.gmail_default')
+            print(razplus_msg)
             break
         time.sleep(1)
         stop_time = time.time()
@@ -101,7 +109,7 @@ if __name__ == "__main__":
     q = Queue()
     t1 = Thread(target=get_email, args=(q,), name="get_email")
     t2 = Thread(target=register_razplus, args=(q,), name="razplus")
-    t3 = Thread(target=check_email, args=(q,), name="check_email")
+    t3 = Thread(target=check_email, args=(), name="check_email")
     t1.start()
     t1.join()
     t2.start()
