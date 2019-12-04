@@ -94,6 +94,7 @@ def check_email():
         r_mail = rs.get("https://tempail.com/en/").text
         pq = pyquery.PyQuery(r_mail)
         mail = pq('.mail ').attr('id')
+        print(mail)
         if mail is not None:
             msg = rs.get("https://tempail.com/en/" + mail).text
             pq = pyquery.PyQuery(msg)
