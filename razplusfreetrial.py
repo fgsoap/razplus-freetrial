@@ -101,7 +101,7 @@ def check_email():
             msg_url = pq('#iframe').attr('src')
             msg_razplus = rs.get(msg_url).text
             pq = pyquery.PyQuery(msg_razplus)
-            msg_razplus_url = pq('tbody tr td table tr td a')
+            msg_razplus_url = pq('tbody tr td table tr td a').attr('href')
             print(msg_razplus_url)
             break
         time.sleep(1)
