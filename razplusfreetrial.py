@@ -100,7 +100,9 @@ def check_email():
             pq = pyquery.PyQuery(msg)
             msg_url = pq('#iframe').attr('src')
             msg_razplus = rs.get(msg_url).text
-            print(msg_razplus)
+            pq = pyquery.PyQuery(msg_razplus)
+            msg_razplus_url = pq('tbody tr td table tr td a')
+            print(msg_razplus_url)
             break
         time.sleep(1)
         stop_time = time.time()
