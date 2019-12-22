@@ -104,7 +104,7 @@ def check_email():
             msg_razplus_url = pq('tbody tr td table tr td a').attr('href')
             print(msg_razplus_url)
             break
-        time.sleep(1)
+        time.sleep(2)
         stop_time = time.time()
         if (stop_time - start_time) > 120:
             break
