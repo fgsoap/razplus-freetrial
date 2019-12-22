@@ -86,7 +86,7 @@ def register_razplus(q):
         sys.exit()
 
 
-def check_email():
+def check_email(q):
     # Check Email
     print("in check_email ...")
     start_time = time.time()
@@ -103,21 +103,31 @@ def check_email():
             pq = pyquery.PyQuery(msg_razplus)
             msg_razplus_url = pq('tbody tr td table tr td a').attr('href')
             print(msg_razplus_url)
+            q.put(msg_razplus_url)
             break
-        time.sleep(2)
+        time.sleep(3)
         stop_time = time.time()
         if (stop_time - start_time) > 120:
+            print("Failed to get it registered!")
             break
+
+
+def set_account(q):
+    register_url = q.get();
+    print(register_url)
 
 
 if __name__ == "__main__":
     q = Queue()
     t1 = Thread(target=get_email, args=(q,), name="get_email")
     t2 = Thread(target=register_razplus, args=(q,), name="razplus")
-    t3 = Thread(target=check_email, args=(), name="check_email")
+    t3 = Thread(target=check_email, args=(q,), name="check_email")
+    t4 = Thread(target=set_account, args=(q,), name="set_account")
     t1.start()
     t1.join()
     t2.start()
     t2.join()
     t3.start()
     t3.join()
+    t4.start()
+    t4.join()
