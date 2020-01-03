@@ -12,18 +12,15 @@ import requests
 rs = requests.Session()
 
 
+class RazPlusFreeTrial:
+    def __init__(self):
+        pass
+
+
 def get_email(q):
     # Get Email address
-    headers = {
-        "authority":
-            "tempail.com",
-        "user-agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
-        "sec-fetch-mode":
-            "navigate"
-    }
     print("in get_email ...")
-    r_mail = rs.get("https://tempail.com/en/", headers=headers).text
+    r_mail = rs.get("https://tempail.com/en/").text
     pq = pyquery.PyQuery(r_mail)
     mail_address = pq('#eposta_adres').attr('value')
     print(mail_address)
@@ -41,22 +38,6 @@ def register_razplus(q):
     rs_razplus.get(
         "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
     )
-    headers = {
-        "Content-Type":
-            "application/x-www-form-urlencoded",
-        "Connection":
-            "keep-alive",
-        "Upgrade-Insecure-Requests":
-            "1",
-        "Host":
-            "accounts.learninga-z.com",
-        "Accept":
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-        "Origin":
-            "https://accounts.learninga-z.com",
-        "Referer":
-            "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
-    }
     payload = {
         "mdrQuery.stateId": 0,
         "mdrQuery.mdrType": "public",
@@ -77,12 +58,11 @@ def register_razplus(q):
     }
     response = rs_razplus.post(
         "https://accounts.learninga-z.com/accountsweb/marketing/trial.do",
-        data=payload,
-        headers=headers)
+        data=payload)
     if "An email has been sent" in response.text and mail_address in response.text:
-        print("Registed in RAZPLUS Successfully!")
+        print("Registed in RazPlus Successfully!")
     else:
-        print("Registed in RAZPLUS failed!")
+        print("Registed in RazPlus failed!")
         sys.exit()
 
 
@@ -108,7 +88,7 @@ def check_email(q):
         time.sleep(3)
         stop_time = time.time()
         if (stop_time - start_time) > 120:
-            print("Failed to get it registered!")
+            print("Failed to get registered!")
             break
 
 
@@ -120,7 +100,7 @@ def set_account(q):
 if __name__ == "__main__":
     q = Queue()
     t1 = Thread(target=get_email, args=(q,), name="get_email")
-    t2 = Thread(target=register_razplus, args=(q,), name="razplus")
+    t2 = Thread(target=register_razplus, args=(q,), name="register_razplus")
     t3 = Thread(target=check_email, args=(q,), name="check_email")
     t4 = Thread(target=set_account, args=(q,), name="set_account")
     t1.start()
