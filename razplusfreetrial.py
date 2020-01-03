@@ -93,8 +93,7 @@ def check_email(q):
 
 
 def set_account(q):
-    register_url = q.get();
-    print(register_url)
+    register_url = q.get()
 
 
 if __name__ == "__main__":
