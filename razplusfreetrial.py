@@ -95,6 +95,7 @@ if __name__ == "__main__":
                                    "https://accounts.learninga-z.com/accountsweb/marketing/trial.do")
         razPlus.register()
         tempMail.check_mail()
+        razPlus.set_password()
     except Exception as e:
         print('Error:', e)
     finally:
