@@ -18,8 +18,8 @@ class RazPlusFreeTrial:
     def register(self):
         mail_address = self.queue.get()
         username = mail_address.split("@")[0]
-        rs_razplus = requests.Session()
-        rs_razplus.get(self.url)
+        # rs = requests.Session()
+        # rs.get(self.url)
         payload = {
             "mdrQuery.stateId": 0,
             "mdrQuery.mdrType": "public",
@@ -38,11 +38,11 @@ class RazPlusFreeTrial:
             "mdrQuery.freeFormOrgName": "HHJJKK",
             "newUserUsername": username
         }
-        response = rs_razplus.post(self.register_url, data=payload)
+        response = requests.post(self.register_url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
-            print("Registed in RazPlus Successfully!")
+            print("Registered in RazPlus Successfully!")
         else:
-            print("Registed in RazPlus failed!")
+            print("Registered in RazPlus failed!")
             sys.exit()
 
 
