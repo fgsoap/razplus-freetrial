@@ -46,8 +46,6 @@ class RazPlusFreeTrial:
 
     def set_password(self):
         url = self.queue.get()
-        print("This is the url to set up password below:")
-        print(url)
         pq = pyquery.PyQuery(requests.get(url).text)
         action_url = pq('#f').attr('action')
         member_id = pq('#memberId').attr('value')
@@ -60,8 +58,7 @@ class RazPlusFreeTrial:
             "password1": password,
             "password2": password,
         }
-        response = requests.post(url, data=payload)
-        print(response.links)
+        requests.post(url, data=payload)
 
 
 class TempEmail:
