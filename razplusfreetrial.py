@@ -85,12 +85,10 @@ class TempEmail:
                 pq = pyquery.PyQuery(msg)
                 url = pq('tbody tr td table tr td a').attr('href')
                 self.queue.put(url)
-                print("Please follow up the link below:")
-                print(url)
                 break
             time.sleep(1)
             stop_time = time.time()
-            if (stop_time - start_time) > 120:
+            if (stop_time - start_time) > 60:
                 print("Failed to get registered!")
                 break
 
