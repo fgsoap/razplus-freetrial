@@ -18,8 +18,6 @@ class RazPlusFreeTrial:
     def register(self):
         mail_address = self.queue.get()
         username = mail_address.split("@")[0]
-        # rs = requests.Session()
-        # rs.get(self.url)
         payload = {
             "mdrQuery.stateId": 0,
             "mdrQuery.mdrType": "public",
@@ -41,6 +39,7 @@ class RazPlusFreeTrial:
         response = requests.post(self.register_url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
             print("Registered in RazPlus Successfully!")
+            print("Username is {}.".format(username))
         else:
             print("Registered in RazPlus failed!")
             sys.exit()
@@ -64,12 +63,12 @@ class TempEmail:
             r_mail = self.rs.get(self.url).text
             pq = pyquery.PyQuery(r_mail)
             mail = pq('.mail ').attr('id')
-            print(mail)
             if mail is not None:
                 pq = pyquery.PyQuery(self.rs.get(self.url + mail).text)
                 msg = self.rs.get(pq('#iframe').attr('src')).text
                 pq = pyquery.PyQuery(msg)
                 msg_url = pq('tbody tr td table tr td a').attr('href')
+                print("Please follow up the link below:")
                 print(msg_url)
                 self.queue.put(msg_url)
                 break
@@ -83,10 +82,15 @@ class TempEmail:
 if __name__ == "__main__":
     q = Queue()
     r = requests.Session()
-    tempMail = TempEmail('https://tempail.com/en/', q, r)
-    tempMail.get_email()
-    razPlus = RazPlusFreeTrial(q, "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign"
-                                  "=trialbtnnxtologoRP",
-                               "https://accounts.learninga-z.com/accountsweb/marketing/trial.do")
-    razPlus.register()
-    tempMail.check_mail()
+    try:
+        tempMail = TempEmail('https://tempail.com/en/', q, r)
+        tempMail.get_email()
+        razPlus = RazPlusFreeTrial(q, "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign"
+                                      "=trialbtnnxtologoRP",
+                                   "https://accounts.learninga-z.com/accountsweb/marketing/trial.do")
+        razPlus.register()
+        tempMail.check_mail()
+    except Exception as e:
+        print('Error:', e)
+    finally:
+        print('Done!')
