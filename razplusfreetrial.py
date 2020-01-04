@@ -44,6 +44,11 @@ class RazPlusFreeTrial:
             print("Registered in RazPlus failed!")
             sys.exit()
 
+    def set_password(self):
+        url = self.queue.get()
+        print("This is the url to set up password below:")
+        print(url)
+
 
 class TempEmail:
     def __init__(self, url, queue, rs):
@@ -60,19 +65,19 @@ class TempEmail:
     def check_mail(self):
         start_time = time.time()
         while True:
-            r_mail = self.rs.get(self.url).text
-            pq = pyquery.PyQuery(r_mail)
+            mail = self.rs.get(self.url).text
+            pq = pyquery.PyQuery(mail)
             mail = pq('.mail ').attr('id')
             if mail is not None:
                 pq = pyquery.PyQuery(self.rs.get(self.url + mail).text)
                 msg = self.rs.get(pq('#iframe').attr('src')).text
                 pq = pyquery.PyQuery(msg)
-                msg_url = pq('tbody tr td table tr td a').attr('href')
+                url = pq('tbody tr td table tr td a').attr('href')
+                self.queue.put(url)
                 print("Please follow up the link below:")
-                print(msg_url)
-                self.queue.put(msg_url)
+                print(url)
                 break
-            time.sleep(5)
+            time.sleep(1)
             stop_time = time.time()
             if (stop_time - start_time) > 120:
                 print("Failed to get registered!")
