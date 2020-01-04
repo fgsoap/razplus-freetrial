@@ -13,8 +13,44 @@ rs = requests.Session()
 
 
 class RazPlusFreeTrial:
-    def __init__(self):
+    def __init__(self, queue):
+        self.queue = queue
+
+    def register(self):
         pass
+
+
+class TempEmail:
+    def __init__(self, url, quene):
+        self.url = url
+        self.queue = quene
+
+    def get_email(self):
+        mail = rs.get(self.url).text
+        pq = pyquery.PyQuery(mail)
+        mail_address = pq('#eposta_adres').attr('value')
+        self.queue.put(mail_address)
+
+    def check_mail(self):
+        start_time = time.time()
+        while True:
+            r_mail = rs.get(self.url).text
+            pq = pyquery.PyQuery(r_mail)
+            mail = pq('.mail ').attr('id')
+            print(mail)
+            if mail is not None:
+                pq = pyquery.PyQuery(rs.get(self.url + mail).text)
+                msg = rs.get(pq('#iframe').attr('src')).text
+                pq = pyquery.PyQuery(msg)
+                msg_url = pq('tbody tr td table tr td a').attr('href')
+                print(msg_url)
+                self.queue.put(msg_url)
+                break
+            time.sleep(5)
+            stop_time = time.time()
+            if (stop_time - start_time) > 120:
+                print("Failed to get registered!")
+                break
 
 
 def get_email(q):
@@ -85,7 +121,7 @@ def check_email(q):
             print(msg_razplus_url)
             q.put(msg_razplus_url)
             break
-        time.sleep(3)
+        time.sleep(5)
         stop_time = time.time()
         if (stop_time - start_time) > 120:
             print("Failed to get registered!")
