@@ -48,6 +48,20 @@ class RazPlusFreeTrial:
         url = self.queue.get()
         print("This is the url to set up password below:")
         print(url)
+        pq = pyquery.PyQuery(requests.get(url).text)
+        action_url = pq('#f').attr('action')
+        member_id = pq('#memberId').attr('value')
+        email_certificate = pq('#emailCertificate').attr('value')
+        password = 12345678
+        url = 'https://accounts.learninga-z.com' + action_url
+        payload = {
+            "memberId": member_id,
+            "emailCertificate": email_certificate,
+            "password1": password,
+            "password2": password,
+        }
+        response = requests.post(url, data=payload)
+        print(response.links)
 
 
 class TempEmail:
