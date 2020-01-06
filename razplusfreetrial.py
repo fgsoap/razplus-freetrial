@@ -51,6 +51,7 @@ class RazPlusFreeTrial:
     def set_password(self):
         url = self.queue.get()
         pq = pyquery.PyQuery(requests.get(url).text)
+        print(pq)
         action_url = pq('#f').attr('action')
         member_id = pq('#memberId').attr('value')
         email_certificate = pq('#emailCertificate').attr('value')
