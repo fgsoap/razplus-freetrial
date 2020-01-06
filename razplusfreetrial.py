@@ -16,7 +16,7 @@ class RazPlusFreeTrial:
         self.url = url
         self.register_url = register_url
 
-    def register(self):
+    def get_registered(self):
         mail_address = self.queue.get()
         username = mail_address.split("@")[0]
         payload = {
@@ -108,7 +108,7 @@ if __name__ == "__main__":
         razPlus = RazPlusFreeTrial(q, "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign"
                                       "=trialbtnnxtologoRP",
                                    "https://accounts.learninga-z.com/accountsweb/marketing/trial.do")
-        razPlus.register()
+        razPlus.get_registered()
         tempMail.check_mail()
         razPlus.set_password()
     except Exception as e:
