@@ -47,7 +47,6 @@ class RazPlusFreeTrial:
     def set_password(self):
         url = self.queue.get()
         pq = pyquery.PyQuery(requests.get(url).text)
-        print(pq)
         username = pq('#username').attr('value')
         password = ''.join(random.sample(string.ascii_letters, 8))
         action_url = pq('#f').attr('action')
