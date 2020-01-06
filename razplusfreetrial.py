@@ -1,4 +1,5 @@
 """This is for razplus-trial"""
+import datetime
 import random
 import string
 import sys
@@ -39,7 +40,8 @@ class RazPlusFreeTrial:
         response = requests.post(self.register_url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
             print("Registered in RazPlus Successfully!")
-            data = {"username": username}
+            data = {"username": username,
+                    "expire time": datetime.datetime.now() + datetime.timedelta(days=14)}
             requests.post('https://enak80j25b8w.x.pipedream.net', data=data)
         else:
             print("Registered in RazPlus failed!")
