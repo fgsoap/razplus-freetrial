@@ -11,10 +11,9 @@ import requests
 
 
 class RazPlusFreeTrial:
-    def __init__(self, queue, url, register_url):
+    def __init__(self, queue, url):
         self.queue = queue
         self.url = url
-        self.register_url = register_url
 
     def get_registered(self):
         mail_address = self.queue.get()
@@ -37,7 +36,7 @@ class RazPlusFreeTrial:
             "mdrQuery.freeFormOrgName": "HHJJKK",
             "newUserUsername": username
         }
-        response = requests.post(self.register_url, data=payload)
+        response = requests.post(self.url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
             print("Registered in RazPlus Successfully!")
         else:
@@ -102,11 +101,11 @@ if __name__ == "__main__":
     q = Queue()
     r = requests.Session()
     try:
-        tempMail = TempEmail('https://tempail.com/en/', q, r)
+        temp_mail_url = 'https://tempail.com/en/'
+        tempMail = TempEmail(temp_mail_url, q, r)
         tempMail.get_email()
-        razPlus = RazPlusFreeTrial(q, "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign"
-                                      "=trialbtnnxtologoRP",
-                                   "https://accounts.learninga-z.com/accountsweb/marketing/trial.do")
+        register_url = 'https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP'
+        razPlus = RazPlusFreeTrial(q, register_url)
         razPlus.get_registered()
         tempMail.check_mail()
         razPlus.set_password()
