@@ -41,9 +41,9 @@ class RazPlusFreeTrial:
         }
         response = requests.post(self.url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
-            print("Registered in RazPlus Successfully!")
+            logging.error("Registered in RazPlus Successfully!")
         else:
-            print("Registered in RazPlus failed!")
+            logging.info("Registered in RazPlus failed!")
             sys.exit()
 
     def set_password(self):
@@ -102,8 +102,7 @@ class TempEmail:
             time.sleep(1)
             stop_time = time.time()
             if (stop_time - start_time) > 60:
-                print("Failed to get registered!")
-                break
+                logging.error("Failed to get registered!")
 
 
 if __name__ == "__main__":
