@@ -1,10 +1,13 @@
 """This is for razplus-trial"""
 import datetime
+import logging
 import random
 import string
 import sys
 import time
 from queue import Queue
+
+logging.basicConfig(level=logging.NOTSET)
 
 import pyquery
 import requests
@@ -76,6 +79,7 @@ class TempEmail:
         mail = self.rs.get(self.url).text
         pq = pyquery.PyQuery(mail)
         mail_address = pq('#eposta_adres').attr('value')
+        logging.info("Get temple emal address: %s." % mail_address)
         self.queue.put(mail_address)
 
     def check_mail(self):
