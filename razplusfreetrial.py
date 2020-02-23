@@ -79,8 +79,11 @@ class TempEmail:
         mail = self.rs.get(self.url).text
         pq = pyquery.PyQuery(mail)
         mail_address = pq('#eposta_adres').attr('value')
-        print("Get temple emal address: {email_addr}".format(email_addr=mail))
-        logging.info("Get temple emal address: %s." % mail_address)
+        if mail_address is not None:
+            logging.info("Successfully got a temporary address: %s." % mail_address)
+        else:
+            logging.error("Failed to get a temporary address!")
+            raise TypeError("Failed to get a temporary address!")
         self.queue.put(mail_address)
 
     def check_mail(self):
