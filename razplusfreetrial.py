@@ -79,6 +79,7 @@ class TempEmail:
         mail = self.rs.get(self.url).text
         pq = pyquery.PyQuery(mail)
         mail_address = pq('#eposta_adres').attr('value')
+        print("Get temple emal address: {email_addr}".format(email_addr=mail))
         logging.info("Get temple emal address: %s." % mail_address)
         self.queue.put(mail_address)
 
