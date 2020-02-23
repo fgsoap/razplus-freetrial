@@ -7,10 +7,10 @@ import sys
 import time
 from queue import Queue
 
-logging.basicConfig(level=logging.INFO)
-
 import pyquery
 import requests
+
+logging.basicConfig(level=logging.INFO)
 
 
 class RazPlusFreeTrial:
