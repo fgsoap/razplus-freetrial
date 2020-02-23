@@ -41,9 +41,9 @@ class RazPlusFreeTrial:
         }
         response = requests.post(self.url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
-            logging.error("Registered in RazPlus Successfully!")
+            logging.inf("Registered in RazPlus Successfully!")
         else:
-            logging.info("Registered in RazPlus failed!")
+            logging.error("Registered in RazPlus failed!")
             sys.exit()
 
     def set_password(self):
@@ -80,10 +80,10 @@ class TempEmail:
         pq = pyquery.PyQuery(mail)
         mail_address = pq('#eposta_adres').attr('value')
         if mail_address is not None:
-            logging.info("Successfully got a temporary address: %s." % mail_address)
+            logging.info("Successfully got a temporary email address: %s." % mail_address)
         else:
-            logging.error("Failed to get a temporary address!")
-            raise TypeError("Failed to get a temporary address!")
+            logging.error("Failed to get a temporary email address!")
+            raise TypeError("Failed to get a temporary email address!")
         self.queue.put(mail_address)
 
     def check_mail(self):
@@ -103,6 +103,7 @@ class TempEmail:
             stop_time = time.time()
             if (stop_time - start_time) > 60:
                 logging.error("Failed to get registered!")
+                raise TypeError("Failed to get registered!")
 
 
 if __name__ == "__main__":
