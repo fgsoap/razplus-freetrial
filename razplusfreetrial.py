@@ -41,7 +41,7 @@ class RazPlusFreeTrial:
         }
         response = requests.post(self.url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
-            logging.inf("Registered in RazPlus Successfully!")
+            logging.info("Registered in RazPlus Successfully!")
         else:
             logging.error("Registered in RazPlus failed!")
             sys.exit()
@@ -119,6 +119,6 @@ if __name__ == "__main__":
         tempMail.check_mail()
         razPlus.set_password()
     except Exception as e:
-        print('Error:', e)
+        logging.error('Error:', e)
     finally:
-        print('Done!')
+        logging.info('Done!')
