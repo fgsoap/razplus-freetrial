@@ -101,7 +101,7 @@ class TempEmail:
                 break
             time.sleep(1)
             stop_time = time.time()
-            if (stop_time - start_time) > 120:
+            if (stop_time - start_time) > 100:
                 logging.error("Failed to get registered!")
                 raise TypeError("Failed to get registered!")
 
