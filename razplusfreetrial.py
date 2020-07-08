@@ -80,7 +80,8 @@ class TempEmail:
         pq = pyquery.PyQuery(mail)
         mail_address = pq('#eposta_adres').attr('value')
         if mail_address is not None:
-            logging.info("Successfully got a temporary email address: %s." % mail_address)
+            logging.info(
+                "Successfully got a temporary email address: %s." % mail_address)
         else:
             logging.error("Failed to get a temporary email address!")
             raise TypeError("Failed to get a temporary email address!")
