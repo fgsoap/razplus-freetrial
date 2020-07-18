@@ -14,6 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class RazPlusFreeTrial:
+
     def __init__(self, queue, url):
         self.queue = queue
         self.url = url
@@ -30,14 +31,14 @@ class RazPlusFreeTrial:
             "org": "HHJJKK",
             "customerType": "new",
             "usageType": "classroom",
-            "firstName": ''.join(random.sample(string.ascii_letters, 4)),
-            "lastName": ''.join(random.sample(string.ascii_letters, 4)),
+            "firstName": "".join(random.sample(string.ascii_letters, 4)),
+            "lastName": "".join(random.sample(string.ascii_letters, 4)),
             "zip": 99999,
             "countryId": 98,
             "email": mail_address,
             "occupation": 39,
             "mdrQuery.freeFormOrgName": "HHJJKK",
-            "newUserUsername": username
+            "newUserUsername": username,
         }
         response = requests.post(self.url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
@@ -49,12 +50,12 @@ class RazPlusFreeTrial:
     def set_password(self):
         url = self.queue.get()
         pq = pyquery.PyQuery(requests.get(url).text)
-        username = pq('#username').attr('value')
-        password = ''.join(random.sample(string.ascii_letters, 8))
-        action_url = pq('#f').attr('action')
-        member_id = pq('#memberId').attr('value')
-        email_certificate = pq('#emailCertificate').attr('value')
-        url = 'https://accounts.learninga-z.com' + action_url
+        username = pq("#username").attr("value")
+        password = "".join(random.sample(string.ascii_letters, 8))
+        action_url = pq("#f").attr("action")
+        member_id = pq("#memberId").attr("value")
+        email_certificate = pq("#emailCertificate").attr("value")
+        url = "https://accounts.learninga-z.com" + action_url
         payload = {
             "memberId": member_id,
             "emailCertificate": email_certificate,
@@ -62,14 +63,20 @@ class RazPlusFreeTrial:
             "password2": password,
         }
         requests.post(url, data=payload)
-        data = {"username": username,
-                "password": password,
-                "expire time": datetime.datetime.now() + datetime.timedelta(days=14), }
+        data = {
+            "username":
+                username,
+            "password":
+                password,
+            "expire time":
+                datetime.datetime.now() + datetime.timedelta(days=14),
+        }
         # https://requestbin.com/r/enak80j25b8w/1Ypz4OVzbh4JVybG5vVEA9wdUON
-        requests.post('https://enak80j25b8w.x.pipedream.net', data=data)
+        requests.post("https://enak80j25b8w.x.pipedream.net", data=data)
 
 
 class TempEmail:
+
     def __init__(self, url, queue, rs):
         self.url = url
         self.queue = queue
@@ -78,10 +85,10 @@ class TempEmail:
     def get_email(self):
         mail = self.rs.get(self.url).text
         pq = pyquery.PyQuery(mail)
-        mail_address = pq('#eposta_adres').attr('value')
+        mail_address = pq("#eposta_adres").attr("value")
         if mail_address is not None:
-            logging.info(
-                "Successfully got a temporary email address: %s." % mail_address)
+            logging.info("Successfully got a temporary email address: %s." %
+                         mail_address)
         else:
             logging.error("Failed to get a temporary email address!")
             raise TypeError("Failed to get a temporary email address!")
@@ -92,12 +99,12 @@ class TempEmail:
         while True:
             mail = self.rs.get(self.url).text
             pq = pyquery.PyQuery(mail)
-            mail = pq('.mail ').attr('id')
+            mail = pq(".mail ").attr("id")
             if mail is not None:
                 pq = pyquery.PyQuery(self.rs.get(self.url + mail).text)
-                msg = self.rs.get(pq('#iframe').attr('src')).text
+                msg = self.rs.get(pq("#iframe").attr("src")).text
                 pq = pyquery.PyQuery(msg)
-                url = pq('tbody tr td table tr td a').attr('href')
+                url = pq("tbody tr td table tr td a").attr("href")
                 self.queue.put(url)
                 break
             time.sleep(1)
@@ -111,15 +118,15 @@ if __name__ == "__main__":
     q = Queue()
     r = requests.Session()
     try:
-        temp_mail_url = 'https://tempail.com/en/'
+        temp_mail_url = "https://tempail.com/en/"
         tempMail = TempEmail(temp_mail_url, q, r)
         tempMail.get_email()
-        register_url = 'https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP'
+        register_url = "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
         razPlus = RazPlusFreeTrial(q, register_url)
         razPlus.get_registered()
         tempMail.check_mail()
         razPlus.set_password()
     except Exception as e:
-        logging.error('Error:', e)
+        logging.error("Error:", e)
     finally:
-        logging.info('Done!')
+        logging.info("Done!")
