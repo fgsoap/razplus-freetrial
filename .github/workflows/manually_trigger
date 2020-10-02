@@ -1,7 +1,11 @@
-name: Manually triggered workflow
-
+name: Manually Trigger
 on:
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'Target to greet'
+        required: false
+        default: 'Raz Plus'
 
 jobs:
   build:
