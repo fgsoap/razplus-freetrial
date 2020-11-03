@@ -115,9 +115,9 @@ class TempEmail:
 
 
 if __name__ == "__main__":
-    q = Queue()
-    r = requests.Session()
     try:
+        q = Queue()
+        r = requests.Session()
         temp_mail_url = "https://tempail.com/en/"
         tempMail = TempEmail(temp_mail_url, q, r)
         tempMail.get_email()
