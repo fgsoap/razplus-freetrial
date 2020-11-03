@@ -12,14 +12,13 @@ import requests
 
 logging.basicConfig(level=logging.INFO)
 
-WEBHOOK_URL = "https://enak80j25b8w.x.pipedream.net"
-
 
 class RazPlusFreeTrial:
 
-    def __init__(self, queue, url):
+    def __init__(self, queue, register_url, webhook_url):
         self.queue = queue
-        self.url = url
+        self.register_url = register_url
+        self.webhook_url = webhook_url
 
     def get_registered(self):
         mail_address = self.queue.get()
@@ -42,7 +41,7 @@ class RazPlusFreeTrial:
             "mdrQuery.freeFormOrgName": "HHJJKK",
             "newUserUsername": username,
         }
-        response = requests.post(self.url, data=payload)
+        response = requests.post(self.register_url, data=payload)
         if "An email has been sent" in response.text and mail_address in response.text:
             logging.info("Registered in RazPlus Successfully!")
         else:
@@ -73,7 +72,7 @@ class RazPlusFreeTrial:
             "expire time":
                 datetime.datetime.now() + datetime.timedelta(days=14),
         }
-        requests.post(WEBHOOK_URL, data=data)
+        requests.post(self.webhook_url, data=data)
 
 
 class TempEmail:
@@ -123,7 +122,8 @@ if __name__ == "__main__":
         tempMail = TempEmail(temp_mail_url, q, r)
         tempMail.get_email()
         register_url = "https://accounts.learninga-z.com/accountsweb/marketing/trial.do?campaign=trialbtnnxtologoRP"
-        razPlus = RazPlusFreeTrial(q, register_url)
+        webhook_url = "https://enak80j25b8w.x.pipedream.net"
+        razPlus = RazPlusFreeTrial(q, register_url, webhook_url)
         razPlus.get_registered()
         tempMail.check_mail()
         razPlus.set_password()
